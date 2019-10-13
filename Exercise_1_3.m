@@ -8,7 +8,7 @@
 I = 10;
 h =zeros(I+1,1);
 f =zeros(I+1,1);
-% evaluating knot
+% evaluating point
 e_p = 0;
 
 

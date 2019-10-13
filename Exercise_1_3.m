@@ -9,7 +9,7 @@ I = 10;
 h =zeros(I+1,1);
 f =zeros(I+1,1);
 % evaluating knot
-e_k = 0;
+e_p = 0;
 
 
 % Assign values to knots and
@@ -19,7 +19,7 @@ for i = 1:I+1
 end
 
 % create a Neville scheme
-R = neville_scheme(h,f,e_k);
+R = neville_scheme(h,f,e_p);
 
 % plot the absolute error
 loglog(h(1 : I + 1), abs(R(1 : I + 1, 1) - 1),'red');
@@ -35,9 +35,11 @@ function f = values(h)
     f = (exp(h)-1)/h;
 end
 
-function R = neville_scheme (knots,d_v,e_k)
+function R = neville_scheme (knots,d_v,e_p)
 
+% polynomial degree
 n = length(knots) - 1;
+
 % Output matrix
 R = zeros(n+1, n+1);
 
@@ -48,8 +50,9 @@ end
 
 % Fill in the rest of the columns by the Neville scheme definition
 for j = 2:n+1
-    for i = 1:n-j+2
-        R(i,j) = ((e_k - knots(i))* R(i+1,j-1) - (e_k - knots(i+j-1))* R(i,j-1)) / (knots(i+j-1)-knots(i));
+    m = j - 1; % polynomial degree of the column
+    for i = 1:n-m+1
+        R(i,j) = ((e_k - knots(i))* R(i+1,m) - (e_k - knots(i+m))* R(i,m)) / (knots(i+m)-knots(i));
     end
 end
 end
